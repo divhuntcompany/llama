@@ -14,6 +14,7 @@ def main(
     max_seq_len: int = 128,
     max_gen_len: int = 64,
     max_batch_size: int = 4,
+    prompt: str = "What is a no-code tool",
 ):
     """
     Entry point of the program for generating text using a pretrained model.
@@ -28,6 +29,7 @@ def main(
         max_seq_len (int, optional): The maximum sequence length for input prompts. Defaults to 128.
         max_gen_len (int, optional): The maximum length of generated sequences. Defaults to 64.
         max_batch_size (int, optional): The maximum batch size for generating sequences. Defaults to 4.
+        promtp (str): Promtp
     """ 
     generator = Llama.build(
         ckpt_dir=ckpt_dir,
@@ -36,23 +38,7 @@ def main(
         max_batch_size=max_batch_size,
     )
 
-    prompts: List[str] = [
-        # For these prompts, the expected answer is the natural continuation of the prompt
-        "I believe the meaning of life is",
-        "Simply put, the theory of relativity states that ",
-        """A brief message congratulating the team on the launch:
-
-        Hi everyone,
-        
-        I just """,
-        # Few shot prompt (providing a few examples before asking model to complete more);
-        """Translate English to French:
-        
-        sea otter => loutre de mer
-        peppermint => menthe poivrée
-        plush girafe => girafe peluche
-        cheese =>""",
-    ]
+    prompts: List[str] = prompt
     results = generator.text_completion(
         prompts,
         max_gen_len=max_gen_len,
